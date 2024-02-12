@@ -1,12 +1,17 @@
 package com.example.androidroom.view
 
+import android.app.SearchManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.androidroom.R
 import com.example.androidroom.databinding.ActivityMainBinding
 import com.example.androidroom.model.Contact
 import java.time.LocalDate
@@ -56,5 +61,40 @@ class MainActivity : AppCompatActivity() {
             binding.rvContact.visibility = View.VISIBLE
             contactAdapter.updateList(contacts)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+
+        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
+        val search = menu.findItem(R.id.search)
+        val searchView = search.actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setIconifiedByDefault(false)
+
+        val textChangeListener: SearchView.OnQueryTextListener =
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(query: String): Boolean {
+                    contactAdapter.getFilter().filter(query)
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    contactAdapter.getFilter().filter(query)
+                    return true
+                }
+            }
+        searchView.setOnQueryTextListener(textChangeListener)
+        return true
     }
 }
