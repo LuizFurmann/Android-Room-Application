@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.example.androidroom.R
 import com.example.androidroom.databinding.ActivityContactDetailsBinding
 import com.example.androidroom.model.Contact
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -127,6 +128,31 @@ class ContactDetailsActivity : AppCompatActivity() {
         contactViewModel.updateTask(updatedContact)
     }
 
+    private fun deleteTaskConfirmation() {
+        val builder = MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialog_rounded)
+        builder.setMessage("Deseja deletar o contato?")
+        builder.setPositiveButton(getString(R.string.yes)) { dialog, which ->
+            deleteContact()
+        }
+        builder.setNegativeButton(getString(R.string.no)) { dialog, which ->
+        }
+        builder.show()
+    }
+    private fun deleteContact() {
+        contact = intent.getSerializableExtra("Contact") as Contact
+        var id = contact.contactId
+
+        val contactForDelete =
+            Contact(
+                id,
+                contact.name,
+                contact.phone
+            )
+        contactViewModel.deleteTask(contactForDelete)
+        Toast.makeText(this, "Deletado com sucesso!", Toast.LENGTH_LONG).show()
+        finish()
+    }
+
     private fun setupToolbar() {
         title = ""
         var actionBar = supportActionBar
@@ -152,10 +178,13 @@ class ContactDetailsActivity : AppCompatActivity() {
         }
 
         if (item.itemId == R.id.edit) {
+            binding.etName.isEnabled = true
+            binding.etPhone.isEnabled = true
+            binding.btnSaveContact.visibility = View.VISIBLE
 
             return true
         } else if (item.itemId == R.id.delete) {
-//            deleteTaskConfirmation()
+            deleteTaskConfirmation()
             return true
         }
         return super.onOptionsItemSelected(item)
