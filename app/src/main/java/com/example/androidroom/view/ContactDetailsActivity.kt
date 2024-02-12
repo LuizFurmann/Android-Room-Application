@@ -1,9 +1,12 @@
 package com.example.androidroom.view
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -26,6 +29,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setupToolbar()
         setupView()
         saveTask()
     }
@@ -121,5 +125,39 @@ class ContactDetailsActivity : AppCompatActivity() {
             binding.etPhone.text.toString()
         )
         contactViewModel.updateTask(updatedContact)
+    }
+
+    private fun setupToolbar() {
+        title = ""
+        var actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back)
+            actionBar.setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (intent.getSerializableExtra("Contact") != null) {
+            menuInflater.inflate(R.menu.menu_item, menu)
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+
+        if (item.itemId == R.id.edit) {
+
+            return true
+        } else if (item.itemId == R.id.delete) {
+//            deleteTaskConfirmation()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
