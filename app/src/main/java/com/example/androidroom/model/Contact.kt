@@ -7,7 +7,7 @@ import java.io.Serializable
 @Entity(tableName = "contact_table")
 data class Contact(
     @PrimaryKey(autoGenerate = true)
-    var taskId : Int,
+    var contactId : Int,
     var name : String,
     var phone : String
 ): Serializable

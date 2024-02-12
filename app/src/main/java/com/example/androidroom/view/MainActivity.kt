@@ -1,5 +1,6 @@
 package com.example.androidroom.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -24,6 +25,15 @@ class MainActivity : AppCompatActivity() {
 
         setupViewModel()
         setupRecyclerView()
+        clickListener()
+    }
+
+    private fun clickListener(){
+        binding.fabNewContact.setOnClickListener {
+            Intent(this@MainActivity, ContactDetailsActivity::class.java).also{
+                startActivity(it)
+            }
+        }
     }
 
     private fun setupViewModel() {

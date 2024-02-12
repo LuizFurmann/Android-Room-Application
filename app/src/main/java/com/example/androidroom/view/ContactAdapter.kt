@@ -1,6 +1,7 @@
 package com.example.androidroom.view
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -39,6 +40,10 @@ class ContactAdapter() : RecyclerView.Adapter<ContactAdapter.TaskViewHolder>() {
 
         holder.itemView.setOnClickListener {
 
+            Intent(holder.itemView.context, ContactDetailsActivity::class.java).also{
+                it.putExtra("Contact", currentItem)
+                holder.itemView.context.startActivity(it)
+            }
         }
     }
 

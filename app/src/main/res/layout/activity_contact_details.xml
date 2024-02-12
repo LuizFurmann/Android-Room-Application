@@ -49,51 +49,28 @@
                 android:layout_marginTop="5dp">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilStartDate"
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etStartDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:lines="1"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:focusable="false"
-                        android:enabled="false"
-                        android:hint="DDD"
-                        android:textColorHint="@color/black"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEndDate"
+                    android:id="@+id/tilPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etEndDate"
+                        android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:lines="1"
                         android:inputType="number"
                         android:singleLine="true"
-                        android:focusable="false"
                         android:enabled="false"
                         android:hint="Número"
                         android:textColorHint="@color/black"/>
                 </com.google.android.material.textfield.TextInputLayout>
-
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnSaveTask"
+                android:id="@+id/btnSaveContact"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
