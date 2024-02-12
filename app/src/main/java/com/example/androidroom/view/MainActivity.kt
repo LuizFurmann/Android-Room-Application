@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        title = "Contatos"
 
         setupViewModel()
         setupRecyclerView()
@@ -57,9 +58,11 @@ class MainActivity : AppCompatActivity() {
     private fun updateList(contacts: List<Contact>) {
         if (contacts.isEmpty()) {
             binding.rvContact.visibility = View.GONE
+            binding.tvTitle.visibility = View.GONE
             binding.imgEmpty.visibility = View.VISIBLE
         } else {
             binding.rvContact.visibility = View.VISIBLE
+            binding.tvTitle.visibility = View.VISIBLE
             binding.imgEmpty.visibility = View.GONE
             contactAdapter.updateList(contacts)
         }
