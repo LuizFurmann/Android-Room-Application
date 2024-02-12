@@ -9,5 +9,6 @@ data class Contact(
     @PrimaryKey(autoGenerate = true)
     var contactId : Int,
     var name : String,
-    var phone : String
+    var phone : String,
+    val imgProfile: String,
 ): Serializable

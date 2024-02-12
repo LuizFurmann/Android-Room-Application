@@ -2,6 +2,7 @@ package com.example.androidroom.view
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -38,6 +39,9 @@ class ContactAdapter() : RecyclerView.Adapter<ContactAdapter.TaskViewHolder>() {
         val currentItem = contactList[position]
         holder.name.text = currentItem.name
 
+        var myUri : Uri = Uri.parse(currentItem.imgProfile);
+        holder.profile.setImageURI(myUri)
+
         holder.itemView.setOnClickListener {
 
             Intent(holder.itemView.context, ContactDetailsActivity::class.java).also{
@@ -53,6 +57,7 @@ class ContactAdapter() : RecyclerView.Adapter<ContactAdapter.TaskViewHolder>() {
 
     class TaskViewHolder(private val itemBinding: RowContactBinding) : RecyclerView.ViewHolder(itemBinding.root){
         var name = itemBinding.tvName
+        var profile = itemBinding.imgProfile
     }
 
     fun getFilter(): Filter {

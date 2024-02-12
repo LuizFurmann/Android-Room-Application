@@ -57,8 +57,10 @@ class MainActivity : AppCompatActivity() {
     private fun updateList(contacts: List<Contact>) {
         if (contacts.isEmpty()) {
             binding.rvContact.visibility = View.GONE
+            binding.imgEmpty.visibility = View.VISIBLE
         } else {
             binding.rvContact.visibility = View.VISIBLE
+            binding.imgEmpty.visibility = View.GONE
             contactAdapter.updateList(contacts)
         }
     }

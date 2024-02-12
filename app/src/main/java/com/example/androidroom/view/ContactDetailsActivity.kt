@@ -2,6 +2,7 @@ package com.example.androidroom.view
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +26,9 @@ class ContactDetailsActivity : AppCompatActivity() {
     private val contactViewModel: ContactViewModel by viewModels()
     private lateinit var contact: Contact
 
+    private val REQUEST_IMAGE = 100
+    private var profilePicturePath: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityContactDetailsBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -33,21 +37,56 @@ class ContactDetailsActivity : AppCompatActivity() {
         setupToolbar()
         setupView()
         saveTask()
+        selectImage()
+    }
+
+    private fun selectImage(){
+        binding.imgContact.setOnClickListener {
+            imageChooser()
+        }
+    }
+
+    private fun imageChooser() {
+        val i = Intent()
+        i.type = "image/*"
+        i.action = Intent.ACTION_OPEN_DOCUMENT
+        startActivityForResult(Intent.createChooser(i, getString(R.string.selectImage)), REQUEST_IMAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE) {
+            val selectedImageUri = data?.data
+            if (null != selectedImageUri) {
+
+                val rPermPersist = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                this.contentResolver.takePersistableUriPermission(data.data!!, rPermPersist)
+                binding.imgContact.setImageURI(data.data)
+                profilePicturePath = selectedImageUri.toString()
+            }
+        }
     }
 
     private fun setupView() {
         if (intent.getSerializableExtra("Contact") != null) {
             contact = intent.getSerializableExtra("Contact") as Contact
 
+            binding.imgContact.isEnabled = false
             binding.btnSaveContact.visibility = View.GONE
             updateView(contact)
         } else {
             binding.etName.isEnabled = true
             binding.etPhone.isEnabled = true
+            binding.imgContact.isEnabled = true
         }
     }
 
     private fun updateView(contact: Contact) {
+        var myUri : Uri = Uri.parse(contact.imgProfile)
+        profilePicturePath = myUri.toString()
+
+
+        binding.imgContact.setImageURI(myUri)
         binding.etName.setText(contact.name)
         binding.etPhone.setText(contact.phone)
     }
@@ -111,6 +150,7 @@ class ContactDetailsActivity : AppCompatActivity() {
             0,
             binding.etName.text.toString(),
             binding.etPhone.text.toString(),
+            profilePicturePath.toString()
         )
         contactViewModel.addTask(task)
         Toast.makeText(this, "Salvo com sucesso", Toast.LENGTH_LONG).show()
@@ -123,7 +163,8 @@ class ContactDetailsActivity : AppCompatActivity() {
         val updatedContact = Contact(
             id,
             binding.etName.text.toString(),
-            binding.etPhone.text.toString()
+            binding.etPhone.text.toString(),
+            profilePicturePath.toString()
         )
         contactViewModel.updateTask(updatedContact)
     }
@@ -146,7 +187,8 @@ class ContactDetailsActivity : AppCompatActivity() {
             Contact(
                 id,
                 contact.name,
-                contact.phone
+                contact.phone,
+                contact.imgProfile
             )
         contactViewModel.deleteTask(contactForDelete)
         Toast.makeText(this, "Deletado com sucesso!", Toast.LENGTH_LONG).show()
@@ -180,6 +222,7 @@ class ContactDetailsActivity : AppCompatActivity() {
         if (item.itemId == R.id.edit) {
             binding.etName.isEnabled = true
             binding.etPhone.isEnabled = true
+            binding.imgContact.isEnabled = true
             binding.btnSaveContact.visibility = View.VISIBLE
 
             return true
